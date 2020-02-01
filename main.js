@@ -57,47 +57,6 @@ Background.prototype.draw = function () {
 Background.prototype.update = function () {
 };
 
-// function MushroomDude(game, spritesheet) {
-//     this.animation = new Animation(spritesheet, 189, 230, 5, 0.10, 14, true, 1);
-//     this.x = 0;
-//     this.y = 0;
-//     this.speed = 100;
-//     this.game = game;
-//     this.ctx = game.ctx;
-// }
-
-// MushroomDude.prototype.draw = function () {
-//     this.animation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
-// }
-
-// MushroomDude.prototype.update = function () {
-//     if (this.animation.elapsedTime < this.animation.totalTime * 8 / 14)
-//         this.x += this.game.clockTick * this.speed;
-//     if (this.x > 1000) this.x = -230;
-// }
-
-
-// // inheritance 
-// function Cheetah(game, spritesheet) {
-//     this.animation = new Animation(spritesheet, 512, 256, 2, 0.05, 8, true, 0.5);
-//     this.speed = 350;
-//     this.ctx = game.ctx;
-//     Entity.call(this, game, 0, 250);
-// }
-
-// Cheetah.prototype = new Entity();
-// Cheetah.prototype.constructor = Cheetah;
-
-// Cheetah.prototype.update = function () {
-//     this.x += this.game.clockTick * this.speed;
-//     if (this.x > 1000) this.x = -230;
-//     Entity.prototype.update.call(this);
-// }
-
-// Cheetah.prototype.draw = function () {
-//     this.animation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
-//     Entity.prototype.draw.call(this);
-// }
 
 // inheritance 
 function Kirby(game, spritesheet) {
@@ -122,7 +81,7 @@ Kirby.prototype.draw = function () {
 }
 
 function Bubbles(game, spritesheet) {
-    this.animation = new Animation(spritesheet, 37, 33, 6, 0.10, 6, true, 2);
+    this.animation = new Animation(spritesheet, 37, 33, 6, 0.08, 6, true, 2);
     this.speed = 100;
     this.ctx = game.ctx;
     Entity.call(this, game, 0, 300);
@@ -144,7 +103,9 @@ Bubbles.prototype.draw = function () {
 
 
 function Buttercup(game, spritesheet) {
-    this.animation = new Animation(spritesheet, 31.4, 35, 6, 0.10, 6, true, 2);
+    this.animation = new Animation(spritesheet, 31.4, 35, 6, .5, 6, true, 2);
+    this.animation_reverse = new Animation(AM.getAsset("./img/buttercup_tornado_reverse.png"), 33, 35, 6, 0.5, 6, true, 2);
+    this.reverse = true;
     this.speed = 200;
     this.ctx = game.ctx;
     this.count = 0;
@@ -152,16 +113,18 @@ function Buttercup(game, spritesheet) {
 }
 
 Buttercup.prototype = new Entity();
-Buttercup.prototype.constructor = Bubbles;
+Buttercup.prototype.constructor = Buttercup;
 
 Buttercup.prototype.update = function () {
 
     if (this.x < 0) {
         this.count++;
+        this.reverse = true;
     }
 
     if (this.count > 0 && this.x > 1000 - 31.4*2) {
         this.count++;
+        this.reverse = false;
     }
 
     if (this.count % 2 === 0) {
@@ -177,12 +140,35 @@ Buttercup.prototype.update = function () {
 }
 
 Buttercup.prototype.draw = function () {
-    this.animation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+    if (this.reverse) this.animation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+    else {
+        this.animation_reverse.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+    }
     Entity.prototype.draw.call(this);
 }
 
 
+function Blossom(game, spritesheet) {
+    this.animation = new Animation(spritesheet, 30, 50, 9, .5, 15, true, 2);
+    this.speed = 200;
+    this.ctx = game.ctx;
+    this.count = 0;
+    Entity.call(this, game, 500, 500);
+}
 
+Blossom.prototype = new Entity();
+Blossom.prototype.constructor = Bubbles;
+
+Blossom.prototype.update = function () {
+
+    Entity.prototype.update.call(this);
+    
+}
+
+Blossom.prototype.draw = function () {
+    this.animation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+    Entity.prototype.draw.call(this);
+}
 
 
 // AM.queueDownload("./img/RobotUnicorn.png");
@@ -191,8 +177,11 @@ Buttercup.prototype.draw = function () {
 // AM.queueDownload("./img/runningcat.png");
 AM.queueDownload("./img/kirby.png");
 AM.queueDownload("./img/ppg_bg.png");
+AM.queueDownload("./img/blossom_sprite.png");
 AM.queueDownload("./img/bubbles_sprite.png");
 AM.queueDownload("./img/buttercup_tornado.png");
+AM.queueDownload("./img/buttercup_tornado_reverse.png");
+AM.queueDownload("./img/image.png");
 
 
 AM.downloadAll(function () {
@@ -206,9 +195,11 @@ AM.downloadAll(function () {
     gameEngine.addEntity(new Background(gameEngine, AM.getAsset("./img/ppg_bg.png")));
     //gameEngine.addEntity(new MushroomDude(gameEngine, AM.getAsset("./img/mushroomdude.png")));
     // gameEngine.addEntity(new Cheetah(gameEngine, AM.getAsset("./img/runningcat.png")));
-    gameEngine.addEntity(new Bubbles(gameEngine, AM.getAsset("./img/bubbles_sprite.png")));
     gameEngine.addEntity(new Kirby(gameEngine, AM.getAsset("./img/kirby.png")));
+    //gameEngine.addEntity(new Blossom(gameEngine, AM.getAsset("./img/blossom_sprite.png")));
+    gameEngine.addEntity(new Bubbles(gameEngine, AM.getAsset("./img/bubbles_sprite.png")));
     gameEngine.addEntity(new Buttercup(gameEngine, AM.getAsset("./img/buttercup_tornado.png")));
+    gameEngine.addEntity(new Blossom(gameEngine, AM.getAsset("./img/image.png")));
 
     console.log("All Done!");
 });
