@@ -81,7 +81,7 @@ Kirby.prototype.draw = function () {
 }
 
 function Bubbles(game, spritesheet) {
-    this.animation = new Animation(spritesheet, 37, 33, 6, 0.4, 6, true, 2);
+    this.animation = new Animation(spritesheet, 37, 33, 5, 0.4, 5, true, 2);
     this.animation_dash = new Animation(AM.getAsset("./img/bubbles_dash.png"), 50, 29, 5, 0.2, 5, true, 2);
     this.animation_dash_rev = new Animation(AM.getAsset("./img/bubbles_dash_reverse.png"), 50, 29, 4, 0.2, 4, true, 2);
     this.speed = 100;
@@ -98,25 +98,24 @@ Bubbles.prototype.update = function () {
         this.x = -230;
         this.speed = 100;
     }
-    if (this.x > 300 && this.x < 700) {
+    if (this.x > 300 && this.x < 525) {
         this.speed = 200;
     }
-    if (this.x >= 700) {
+    if (this.x >= 525) {
         this.speed = 100;
     }
     Entity.prototype.update.call(this);
 }
 
 Bubbles.prototype.draw = function () {
-    if (this.x <= 300 || this.animation_dash_rev.isDone()) {
+    if (this.x <= 300 || this.x >= 525) {
         this.animation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
     }
     else if (this.x > 300) {
         this.animation_dash.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
-        if (this.animation_dash.isDone()) {
-            console.log('Hello')
-            this.animation_dash.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
-        }
+        // if (this.animation_dash.frames = {
+        //     this.animation_dash.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+        // }
     }
     
     Entity.prototype.draw.call(this);
