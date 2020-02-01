@@ -81,7 +81,9 @@ Kirby.prototype.draw = function () {
 }
 
 function Bubbles(game, spritesheet) {
-    this.animation = new Animation(spritesheet, 37, 33, 6, 0.08, 6, true, 2);
+    this.animation = new Animation(spritesheet, 37, 33, 6, 0.4, 6, true, 2);
+    this.animation_dash = new Animation(AM.getAsset("./img/bubbles_dash.png"), 50, 29, 5, 0.2, 5, true, 2);
+    this.animation_dash_rev = new Animation(AM.getAsset("./img/bubbles_dash_reverse.png"), 50, 29, 4, 0.2, 4, true, 2);
     this.speed = 100;
     this.ctx = game.ctx;
     Entity.call(this, game, 0, 300);
@@ -92,12 +94,31 @@ Bubbles.prototype.constructor = Bubbles;
 
 Bubbles.prototype.update = function () {
     this.x += this.game.clockTick * this.speed;
-    if (this.x > 1000) this.x = -230;
+    if (this.x > 1000) {
+        this.x = -230;
+        this.speed = 100;
+    }
+    if (this.x > 300 && this.x < 700) {
+        this.speed = 200;
+    }
+    if (this.x >= 700) {
+        this.speed = 100;
+    }
     Entity.prototype.update.call(this);
 }
 
 Bubbles.prototype.draw = function () {
-    this.animation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+    if (this.x <= 300 || this.animation_dash_rev.isDone()) {
+        this.animation.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+    }
+    else if (this.x > 300) {
+        this.animation_dash.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+        if (this.animation_dash.isDone()) {
+            console.log('Hello')
+            this.animation_dash.drawFrame(this.game.clockTick, this.ctx, this.x, this.y);
+        }
+    }
+    
     Entity.prototype.draw.call(this);
 }
 
@@ -179,6 +200,8 @@ AM.queueDownload("./img/kirby.png");
 AM.queueDownload("./img/ppg_bg.png");
 AM.queueDownload("./img/blossom_sprite.png");
 AM.queueDownload("./img/bubbles_sprite.png");
+AM.queueDownload("./img/bubbles_dash.png");
+AM.queueDownload("./img/bubbles_dash_reverse.png");
 AM.queueDownload("./img/buttercup_tornado.png");
 AM.queueDownload("./img/buttercup_tornado_reverse.png");
 AM.queueDownload("./img/image.png");
