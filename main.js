@@ -103,10 +103,10 @@ Bubbles.prototype.draw = function () {
 
 
 function Buttercup(game, spritesheet) {
-    this.animation = new Animation(spritesheet, 31.4, 35, 6, .5, 6, true, 2);
-    this.animation_reverse = new Animation(AM.getAsset("./img/buttercup_tornado_reverse.png"), 33, 35, 6, 0.5, 6, true, 2);
+    this.animation = new Animation(spritesheet, 31.4, 35, 6, .1, 6, true, 2);
+    this.animation_reverse = new Animation(AM.getAsset("./img/buttercup_tornado_reverse.png"), 32.7, 35, 6, 0.1, 6, true, 2);
     this.reverse = true;
-    this.speed = 200;
+    this.speed = 250;
     this.ctx = game.ctx;
     this.count = 0;
     Entity.call(this, game, 1000, 350);
@@ -149,7 +149,7 @@ Buttercup.prototype.draw = function () {
 
 
 function Blossom(game, spritesheet) {
-    this.animation = new Animation(spritesheet, 30, 50, 9, .5, 15, true, 2);
+    this.animation = new Animation(spritesheet, 30, 50, 9, .1, 15, true, 2);
     this.speed = 200;
     this.ctx = game.ctx;
     this.count = 0;
