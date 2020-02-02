@@ -82,8 +82,8 @@ Kirby.prototype.draw = function () {
 
 function Bubbles(game, spritesheet) {
     this.animation = new Animation(spritesheet, 37, 33, 5, 0.3, 5, true, 2);
-    this.animation_dash = new Animation(AM.getAsset("./img/bubbles_dash.png"), 47.861, 29, 5, 0.2, 5, true, 2);
-    this.animation_dash_rev = new Animation(AM.getAsset("./img/bubbles_dash_reverse.png"), 50, 29, 4, 0.2, 4, true, 2);
+    this.animation_dash = new Animation(AM.getAsset("./img/bubbles_dash.png"), 48.6, 33, 5, 0.2, 5, true, 2);
+    //this.animation_dash_rev = new Animation(AM.getAsset("./img/bubbles_dash_reverse.png"), 50, 29, 4, 0.2, 4, true, 2);
     this.speed = 100;
     this.ctx = game.ctx;
     Entity.call(this, game, 0, 300);
